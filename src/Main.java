@@ -1,12 +1,23 @@
 import java.util.Random;
 import java.util.ArrayList;
 import java.util.List;
+import java.io.File;
+import java.io.IOException;
+import java.util.Scanner;
+import java.io.FileWriter;
 
 public class Main {
     public static void main(String[] args) {
 
         System.out.println("-------Password Generator by Covenant-------");
         System.out.println("--------------------------------------------");
+
+        Scanner scanDetails = new Scanner(System.in);
+        System.out.println("Enter the details the password is associated with");
+        System.out.print("Site Name: ");
+        String siteName = scanDetails.nextLine();
+        System.out.print("Username/Email: ");
+        String ue = scanDetails.nextLine();
 
         char[] str = {
                 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z',
@@ -83,7 +94,7 @@ public class Main {
             }
         }
 
-        System.out.println("The generated password is " + concatString);
+        System.out.println("The generated password for " + siteName + " is " + concatString);
         System.out.println("\n\nThe password contains special character(s): " + validateSpecial);
         System.out.println("The password contains number(s): " + validateNum);
         System.out.println("The password contains lower case letter(s): " + validateLower);
@@ -91,10 +102,18 @@ public class Main {
         System.out.println("The password length is " + list.size());
 
         if (validateSpecial && validateNum && validateLower && validateUpper) {
-            System.out.println("\nThe password is strong");
+            System.out.println("\nPassword Level: Strong");
         } else {
             System.out.println("\nWarning!!! The password might be weak, you may want to generate another one");
         }
 
+        try {
+            FileWriter myPassword = new FileWriter("Password.txt", true);
+            myPassword.write(siteName + "\t\t\t" + ue + "\t\t\t\t" + concatString + System.lineSeparator());
+            myPassword.close();
+        } catch (IOException e) {
+            System.out.println("An error occurred.");
+            e.printStackTrace();
+        }
     }
 }
