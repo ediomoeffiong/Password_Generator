@@ -5,6 +5,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Scanner;
 import java.io.FileWriter;
+import java.io.BufferedReader;
+import java.io.FileReader;
 
 public class Main {
     public static void main(String[] args) {
@@ -13,7 +15,14 @@ public class Main {
         System.out.println("--------------------------------------------");
 
         Scanner scanDetails = new Scanner(System.in);
-        System.out.println("Enter the details the password is associated with");
+
+        System.out.print("Do you want to view passwords or generate a new one (Y/N): \n");
+        String view = scanDetails.nextLine();
+        view = view.toLowerCase();
+        if (view.equals("y") || view.equals("yes")) {
+            viewPassword();
+        }
+        System.out.println("\nEnter the details the password is associated with");
         System.out.print("Site Name: ");
         String siteName = scanDetails.nextLine();
         System.out.print("Username/Email: ");
@@ -103,16 +112,28 @@ public class Main {
 
         if (validateSpecial && validateNum && validateLower && validateUpper) {
             System.out.println("\nPassword Level: Strong");
+            try {
+                FileWriter myPassword = new FileWriter("Password.txt", true);
+                myPassword.write(siteName + "\t\t\t" + ue + "\t\t\t\t" + concatString + System.lineSeparator());
+                myPassword.close();
+            } catch (IOException e) {
+                System.out.println("An error occurred.");
+                e.printStackTrace();
+            }
         } else {
             System.out.println("\nWarning!!! The password might be weak, you may want to generate another one");
         }
+    }
 
-        try {
-            FileWriter myPassword = new FileWriter("Password.txt", true);
-            myPassword.write(siteName + "\t\t\t" + ue + "\t\t\t\t" + concatString + System.lineSeparator());
-            myPassword.close();
+    public static void viewPassword() {
+        String filePath = "Password.txt";
+
+        try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                System.out.println(line);
+            }
         } catch (IOException e) {
-            System.out.println("An error occurred.");
             e.printStackTrace();
         }
     }
