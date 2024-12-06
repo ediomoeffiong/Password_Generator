@@ -58,6 +58,8 @@ public class Main {
 
 
         Random random = new Random();
+
+        // Creates condition value for validating the presence of important variables
         boolean validateSpecial = false;
         boolean validateLower = false;
         boolean validateUpper = false;
